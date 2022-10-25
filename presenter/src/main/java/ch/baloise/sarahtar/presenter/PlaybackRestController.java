@@ -16,6 +16,8 @@ public class PlaybackRestController {
 
     Logger logger = LoggerFactory.getLogger(PlaybackRestController.class);
 
+    VideoPlayer videoPlayer;
+
     @GetMapping("/{id}/{videoid}/{language}")
     public String playVideo(@PathVariable int id, @PathVariable int videoid, @PathVariable String language) throws IOException {
         return playVideoById(id, videoid, language);
@@ -27,12 +29,7 @@ public class PlaybackRestController {
     }
 
     private String playVideoById(int id, int videoid, String language) throws IOException {
-        String rpiCommand = "mplayer -fs -vfm ffmpeg -idle -fixed-vo";
-        String filename = "Avatar"+id+"_Video"+videoid+"_"+language+".mp4";
-        String homedir = "/usr/bin/sarahtar/videos/";
-        String rpiCommandPlayback = rpiCommand + " " + homedir + filename;
         logger.info("Received play command: video: " + id +", avatar: " + videoid + " to start once");
-        Runtime.getRuntime().exec(rpiCommandPlayback);
-        return "Video: " + id +", avatar: " + videoid + " has been startet once";
+        return videoPlayer.playVideo("Avatar"+id+"_Video"+videoid+"_"+language+".mp4");
     }
 }
