@@ -53,5 +53,6 @@
 
     <modules>
         <module>presenter</module>
+        <module>sensor-trigger</module>
     </modules>
 </project>
