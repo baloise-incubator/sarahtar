@@ -1,0 +1,29 @@
+#! /bin/sh
+### BEGIN INIT INFO
+# Provides: sarahtar
+# Required-Start: $syslog
+# Required-Stop: $syslog
+# Default-Start: 2 3 4 5
+# Default-Stop: 0 1 6
+# Short-Description: Sarahtar
+# Description:
+### END INIT INFO
+ 
+case "$1" in
+    start)
+        echo "Sarahtar will be started"
+        # Start Program
+        java -jar /usr/bin/sarahtar/presenter-0.0.1-SNAPSHOT.jar
+        ;;
+    stop)
+        echo "Sarahtar will be killed"
+        # Beende Programm
+        killall java
+        ;;
+    *)
+        echo "Use: /etc/init.d/sarahtar {start|stop}"
+        exit 1
+        ;;
+esac
+ 
+exit 0
