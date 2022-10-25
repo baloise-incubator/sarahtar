@@ -13,6 +13,8 @@ import javax.annotation.PostConstruct;
 @Component
 public class SensorTriggerComponent {
 
+    private static final String SARAH_WELCOME_URL = "http://localhost:8080/play/sarah/welcome/DE";
+
     private static final int PIN_BUTTON = 27; // GPIO 27
 
     @PostConstruct
@@ -43,10 +45,8 @@ public class SensorTriggerComponent {
     }
 
     private void callPresenter(Console console) {
-        final String uri = "http://localhost:8080/play/sarah/welcome/DE";
-
         RestTemplate restTemplate = new RestTemplate();
-        String result = restTemplate.getForObject(uri, String.class);
+        String result = restTemplate.getForObject(SARAH_WELCOME_URL, String.class);
         console.println(result);
     }
 
