@@ -8,31 +8,23 @@ import java.io.IOException;
 @Service
 public class VideoPlayer {
 
-    //private static final String RPI_COMMAND = "mplayer -fs -vfm ffmpeg -idle -fixed-vo";
+    private static final String RPI_COMMAND = "mplayer -fs -vfm ffmpeg -idle -fixed-vo";
     private static final String HOMEDIR = "/usr/bin/sarahtar/videos/";
 
     Logger logger = LoggerFactory.getLogger(VideoPlayer.class);
 
-    public String playVideo(String fileName, String idleName) throws IOException {
+    public String playVideo(String fileName) throws IOException {
         logger.info("Received play command for video: " + fileName);
 
         if (!isUnix()) {
             return "Unsupported operating system: Video not started";
         }
 
-        String[] rpiCommandPlayback = {
-                "/usr/bin/mplayer",
-                "-fs",
-                HOMEDIR + fileName,
-                "-fs",
-                "-fixed-vo",
-                "-idle",
-                HOMEDIR + idleName,
-                "-loop 0",
-                ""
-        };
+        String cmdString = RPI_COMMAND + " "+ HOMEDIR + fileName;
+        String[] cmdArray = cmdString.split( " ");
 
-        ProcessBuilder pb = new ProcessBuilder(rpiCommandPlayback);
+        ProcessBuilder pb = new ProcessBuilder(cmdArray);
+        // local display
         pb.environment().put("DISPLAY", ":0");
 
         pb.start();
