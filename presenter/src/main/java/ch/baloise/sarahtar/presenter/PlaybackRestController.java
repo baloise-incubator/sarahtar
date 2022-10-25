@@ -32,6 +32,6 @@ public class PlaybackRestController {
 
     private String playVideoById(String avatarname, String videotag, String language) throws IOException {
         logger.info("Received play command: video: " + avatarname +", videotag: " + videotag + " to start once");
-        return videoPlayer.playVideo(avatarname+"_"+videotag+"_"+language+".mp4");
+        return videoPlayer.playVideo(avatarname+"_"+videotag+"_"+language+".mp4", avatarname+"_idle.mp4");
     }
 }

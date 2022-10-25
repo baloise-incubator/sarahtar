@@ -13,7 +13,7 @@ public class VideoPlayer {
 
     Logger logger = LoggerFactory.getLogger(VideoPlayer.class);
 
-    public String playVideo(String fileName) throws IOException {
+    public String playVideo(String fileName, String idleName) throws IOException {
         logger.info("Received play command for video: " + fileName);
 
         if (!isUnix()) {
@@ -23,11 +23,13 @@ public class VideoPlayer {
         String[] rpiCommandPlayback = {
                 "/usr/bin/mplayer",
                 "-fs",
-                "-vfm",
-                "ffmpeg",
-                "-idle",
+                HOMEDIR + fileName,
+                "-fs",
                 "-fixed-vo",
-                HOMEDIR + fileName
+                "-idle",
+                HOMEDIR + idleName,
+                "-loop 0",
+                ""
         };
 
         ProcessBuilder pb = new ProcessBuilder(rpiCommandPlayback);
