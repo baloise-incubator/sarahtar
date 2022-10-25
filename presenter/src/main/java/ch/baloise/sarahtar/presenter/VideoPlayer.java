@@ -26,7 +26,7 @@ public class VideoPlayer {
                 .replace(SPEECH_PLACEHOLDER,HOMEDIR + speachFileName)
                 .replace(IDLE_PLACEHOLDER,HOMEDIR + idleFileName);
 
-        logger.info("Using command: " + cmdString);
+        logger.debug("Using command: " + cmdString);
 
         ProcessBuilder pb = new ProcessBuilder(cmdString.split( " "));
         // local display
