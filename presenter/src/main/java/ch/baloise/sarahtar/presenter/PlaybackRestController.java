@@ -10,7 +10,7 @@ public class PlaybackRestController {
     private String playVideoById(int id, String videoid, String language) {
         String rpiCommand = "mplayer -fs -vfm ffmpeg -idle -fixed-vo mplayer -fs"
         String filename = "Avatar"+id+"_Video"+videoid+"_"+language;
-        String homedir = "/usr/bin/sarathar/videos/";
+        String homedir = "/usr/bin/sarahtar/videos/";
         String rpiCommandPlayback = rpiCommand + " " + homedir + filename;
         Process process = Runtime.getRuntime().exec(rpiCommandPlayback);
         return "Video: " + id +", avatar: " + avatarName + " has been startet once";
