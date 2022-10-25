@@ -11,7 +11,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class SensorTriggerApplication {
 
-    private static final int PIN_BUTTON = 24; // PIN 18 = BCM 24
+    private static final int PIN_BUTTON = 27; // GPIO 27
 
     private static int pressCount = 0;
 
