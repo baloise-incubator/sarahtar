@@ -22,7 +22,7 @@ public class PlaybackRestController {
 
     @PostConstruct
     public void initApplication() throws IOException {
-        videoPlayer.playVideo("Avatar1_Video1_DE.mp4");
+        playVideoById(1,1,"DE");
     }
 
     @GetMapping("/{id}/{videoid}/{language}")
