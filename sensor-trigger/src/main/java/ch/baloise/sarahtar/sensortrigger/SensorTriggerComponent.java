@@ -6,6 +6,7 @@ import com.pi4j.io.gpio.digital.DigitalState;
 import com.pi4j.io.gpio.digital.PullResistance;
 import com.pi4j.util.Console;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.RestTemplate;
 
 import javax.annotation.PostConstruct;
 
@@ -13,8 +14,6 @@ import javax.annotation.PostConstruct;
 public class SensorTriggerComponent {
 
     private static final int PIN_BUTTON = 27; // GPIO 27
-
-    private static int pressCount = 0;
 
     @PostConstruct
     public void initListeners() {
@@ -37,11 +36,18 @@ public class SensorTriggerComponent {
         var button = pi4j.create(buttonConfig);
         button.addListener(e -> {
             if (e.state() == DigitalState.LOW) {
-                pressCount++;
-                console.println("Button was pressed for the " + pressCount + "th time");
+                console.println("Button was pressed! Calling REST Service");
+                callPresenter(console);
             }
         });
+    }
 
+    private void callPresenter(Console console) {
+        final String uri = "http://localhost:8080/play/sarah/welcome/DE";
+
+        RestTemplate restTemplate = new RestTemplate();
+        String result = restTemplate.getForObject(uri, String.class);
+        console.println(result);
     }
 
 }
