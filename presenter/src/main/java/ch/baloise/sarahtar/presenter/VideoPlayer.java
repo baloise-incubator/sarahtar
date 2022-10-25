@@ -16,6 +16,10 @@ public class VideoPlayer {
     public String playVideo(String fileName) throws IOException {
         logger.info("Received play command for video: " + fileName);
 
+        if (!isUnix()) {
+            return "Unsupported operating system: Video not started";
+        }
+
         String[] rpiCommandPlayback = {
                 "/usr/bin/mplayer",
                 "-fs",
@@ -32,4 +36,10 @@ public class VideoPlayer {
         pb.start();
         return "Started Video: " + fileName;
     }
+
+    private static boolean isUnix() {
+        String OS = System.getProperty("os.name").toLowerCase();
+        return (OS.contains("nix") || OS.contains("nux"));
+    }
+
 }
