@@ -19,7 +19,7 @@ public class PlaybackRestController {
 
     @PostConstruct
     public void init() throws IOException {
-        Runtime.getRuntime().exec("export DISPLAY=:0");
+        Runtime.getRuntime().exec("sh export DISPLAY=:0");
     }
 
     private String playVideoById(int id, int videoid, String language) throws IOException {
