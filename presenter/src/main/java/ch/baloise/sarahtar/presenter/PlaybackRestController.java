@@ -22,16 +22,16 @@ public class PlaybackRestController {
 
     @PostConstruct
     public void initApplication() throws IOException {
-        playVideoById(1,1,"DE");
+        playVideoById("sarah","welcome","DE");
     }
 
     @GetMapping("/{id}/{videoid}/{language}")
-    public String playVideo(@PathVariable int id, @PathVariable int videoid, @PathVariable String language) throws IOException {
+    public String playVideo(@PathVariable String id, @PathVariable String videoid, @PathVariable String language) throws IOException {
         return playVideoById(id, videoid, language);
     }
 
-    private String playVideoById(int id, int videoid, String language) throws IOException {
-        logger.info("Received play command: video: " + id +", avatar: " + videoid + " to start once");
-        return videoPlayer.playVideo("Avatar"+id+"_Video"+videoid+"_"+language+".mp4");
+    private String playVideoById(String avatarname, String videotag, String language) throws IOException {
+        logger.info("Received play command: video: " + avatarname +", videotag: " + videotag + " to start once");
+        return videoPlayer.playVideo(avatarname+"_"+videotag+"_"+language+".mp4");
     }
 }
