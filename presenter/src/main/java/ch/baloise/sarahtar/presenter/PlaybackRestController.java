@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.annotation.PostConstruct;
 import java.io.IOException;
 
 @RestController
@@ -16,13 +17,17 @@ public class PlaybackRestController {
         return playVideoById(id, videoid, language);
     }
 
+    @PostConstruct
+    public void init() throws IOException {
+        Runtime.getRuntime().exec("export DISPLAY=:0");
+    }
+
     private String playVideoById(int id, int videoid, String language) throws IOException {
-        String rpiCommand = "mplayer -fs -vfm ffmpeg -idle -fixed-vo mplayer -fs";
+        String rpiCommand = "mplayer -fs -vfm ffmpeg -idle -fixed-vo";
         String filename = "Avatar"+id+"_Video"+videoid+"_"+language;
         String homedir = "/usr/bin/sarahtar/videos/";
         String rpiCommandPlayback = rpiCommand + " " + homedir + filename;
         Process process = Runtime.getRuntime().exec(rpiCommandPlayback);
         return "Video: " + id +", avatar: " + videoid + " has been startet once";
     }
-
 }
