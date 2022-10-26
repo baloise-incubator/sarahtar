@@ -1,10 +1,12 @@
 package ch.baloise.sarahtar.presenter;
 
+import com.coremedia.iso.IsoFile;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -33,7 +35,6 @@ public class VideoPlayer {
         }
     }
 
-
     @Async
     public void playVideo(String speechFileName, String idleFileName) throws IOException {
         logger.info("Received play command for video: " + speechFileName);
@@ -41,19 +42,38 @@ public class VideoPlayer {
         if (!isUnix()) {
             return;
         }
+        long duration = getMp4Duration(HOMEDIR + speechFileName);
+        logger.info("Duration of Video: "+duration);
 
         mplayerDo("loadfile /usr/bin/sarahtar/videos/"+speechFileName);
 
-        logger.info("Sleeping");
+        logger.info("Sleeping for : "+duration+ "milliseconds");
         try {
-            Thread.sleep(9000);
+            Thread.sleep(duration);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
 
-        //mplayerDo("set_property loop 0");
-
         mplayerDo("loadfile /usr/bin/sarahtar/videos/"+idleFileName);
+    }
+
+    private long getMp4Duration(String speechPath) {
+        File file = new File(speechPath);
+        if (Files.notExists(file.toPath()) || !Files.isReadable(file.toPath())) {
+            logger.warn(" The file path does not exist or is unreadable  {}", file.toPath());
+            return 0;
+        }
+        try {
+            IsoFile isoFile = new IsoFile(file.getPath());
+            long duration = isoFile.getMovieBox().getMovieHeaderBox().getDuration();
+            long timescale = isoFile.getMovieBox().getMovieHeaderBox().getTimescale();
+            long dur = duration / timescale;
+            logger.info("Sleeping speech video for duration: "+ dur*1000);
+            return dur*1000;
+        } catch (IOException e) {
+            logger.error(" Read MP4 Error in file length ", e);
+            return 0;
+        }
     }
 
 
