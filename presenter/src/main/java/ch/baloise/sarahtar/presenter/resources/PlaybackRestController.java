@@ -30,11 +30,13 @@ public class PlaybackRestController {
 
     @GetMapping("/{id}/{videoid}/{language}")
     String playVideo(@PathVariable String id, @PathVariable String videoid, @PathVariable String language) throws IOException {
-        return playVideoById(id, videoid, language);
+        playVideoById(id, videoid, language);
+        return "videoid";
     }
 
     private String playVideoById(String avatarname, String videotag, String language) throws IOException {
         logger.info("Received play command: video: " + avatarname +", videotag: " + videotag + " to start once");
-        return videoPlayer.playVideo(avatarname+"_"+videotag+"_"+language+".mp4", avatarname+"_idle.mp4");
+        videoPlayer.playVideo(avatarname+"_"+videotag+"_"+language+".mp4", avatarname+"_idle.mp4");
+        return videotag;
     }
 }
