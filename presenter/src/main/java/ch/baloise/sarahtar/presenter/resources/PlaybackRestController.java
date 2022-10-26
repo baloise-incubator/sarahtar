@@ -1,5 +1,6 @@
-package ch.baloise.sarahtar.presenter;
+package ch.baloise.sarahtar.presenter.resources;
 
+import ch.baloise.sarahtar.presenter.VideoPlayer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +27,7 @@ public class PlaybackRestController {
     }
 
     @GetMapping("/{id}/{videoid}/{language}")
-    public String playVideo(@PathVariable String id, @PathVariable String videoid, @PathVariable String language) throws IOException {
+    String playVideo(@PathVariable String id, @PathVariable String videoid, @PathVariable String language) throws IOException {
         return playVideoById(id, videoid, language);
     }
 
