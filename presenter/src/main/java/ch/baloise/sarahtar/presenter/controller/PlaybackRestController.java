@@ -44,6 +44,7 @@ public class PlaybackRestController {
     @GetMapping("/random")
     String playRandomVideo() throws IOException {
         List<File> files = videoInfo.listAllVideoFiles();
+        files.removeIf(file -> file.getName().contains("idle"));
         File randomFile = files.get(rand.nextInt(files.size()));
 
         List<Avatar> avatars = new ArrayList<>();
