@@ -1,13 +1,12 @@
-package ch.baloise.sarahtar.presenter.resources;
+package ch.baloise.sarahtar.presenter.service;
 
 import ch.baloise.sarahtar.presenter.model.Avatar;
 import ch.baloise.sarahtar.presenter.model.Speech;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -15,26 +14,12 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-@RestController
-@RequestMapping("info/")
-public class VideoInfosRestController {
+@Service
+public class VideoInfo {
 
-    Logger logger = LoggerFactory.getLogger(VideoInfosRestController.class);
+    Logger logger = LoggerFactory.getLogger(VideoInfo.class);
 
-    @GetMapping("/speeches")
-    List<Avatar> getAllSpeaches() {
-        return listAllVideos();
-    }
-
-    @ResponseBody
-    private List<Avatar> listAllVideos() {
-        File folder = new File("/usr/bin/sarahtar/videos/");
-        File[] listOfFiles = folder.listFiles();
-        assert listOfFiles != null;
-        return getAvatarsFromFilelist(listOfFiles);
-    }
-
-    private List<Avatar> getAvatarsFromFilelist(File[] listOfFiles) {
+    public List<Avatar> getAvatarsFromFilelist(File[] listOfFiles) {
         List<Avatar> avatars = new ArrayList<>();
         logger.info(String.valueOf(listOfFiles));
         for (File file : listOfFiles) {

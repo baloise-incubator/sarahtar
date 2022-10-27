@@ -1,6 +1,6 @@
-package ch.baloise.sarahtar.presenter.resources;
+package ch.baloise.sarahtar.presenter.controller;
 
-import ch.baloise.sarahtar.presenter.VideoPlayer;
+import ch.baloise.sarahtar.presenter.service.VideoPlayer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
