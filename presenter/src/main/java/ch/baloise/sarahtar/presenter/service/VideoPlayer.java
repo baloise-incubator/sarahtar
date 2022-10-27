@@ -18,11 +18,15 @@ public class VideoPlayer {
     private static final String BASE_DIR = "/usr/bin/sarahtar/";
     private static final String VIDEO_DIR = BASE_DIR+"videos/";
 
-    private Process mplayer = null;
+    private static Process mplayer = null;
 
     Logger logger = LoggerFactory.getLogger(VideoPlayer.class);
 
     public VideoPlayer() {
+        if (mplayer!=null) {
+            logger.info("Video Service already running");
+            return;
+        }
         logger.info("Starting Video Service");
         ProcessBuilder pb = new ProcessBuilder(MPLAYER_START.split( " "));
         // local display
