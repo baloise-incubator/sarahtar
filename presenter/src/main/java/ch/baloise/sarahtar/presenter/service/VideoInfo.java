@@ -5,8 +5,6 @@ import ch.baloise.sarahtar.presenter.model.Speech;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -19,7 +17,12 @@ public class VideoInfo {
 
     Logger logger = LoggerFactory.getLogger(VideoInfo.class);
 
-    public List<Avatar> getAvatarsFromFilelist(File[] listOfFiles) {
+    public List<File> listAllVideoFiles() {
+        File folder = new File("/usr/bin/sarahtar/videos/");
+        return Arrays.asList(folder.listFiles());
+    }
+
+    public List<Avatar> getAvatarsFromFilelist(List<File> listOfFiles) {
         List<Avatar> avatars = new ArrayList<>();
         logger.info(String.valueOf(listOfFiles));
         for (File file : listOfFiles) {
@@ -30,9 +33,9 @@ public class VideoInfo {
         return avatars;
     }
 
-    protected void fillAvatarsFromFilename(List<Avatar> avatars, String fileName) {
+    public void fillAvatarsFromFilename(List<Avatar> avatars, String fileName) {
         logger.info("Search found filename: "+ fileName);
-        if (isFilenameSarahtorVideoName(fileName)) {
+        if (isFilenameValidVideoName(fileName)) {
             String[] infos = fileName.split("_");
             String avatar = infos[0];
             String speech = infos[1];
@@ -49,7 +52,7 @@ public class VideoInfo {
         }
     }
 
-    private boolean isFilenameSarahtorVideoName(String name) {
+    private boolean isFilenameValidVideoName(String name) {
         String[] infos = name.split("_");
         if (name.endsWith(".mp4")) {
             if (infos.length == 2 || infos.length == 3) {

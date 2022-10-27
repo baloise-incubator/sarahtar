@@ -29,8 +29,7 @@ public class VideoInfoRestController {
 
     @ResponseBody
     private List<Avatar> listAllVideos() {
-        File folder = new File("/usr/bin/sarahtar/videos/");
-        File[] listOfFiles = folder.listFiles();
+        List<File> listOfFiles = videoInfo.listAllVideoFiles();
         assert listOfFiles != null;
         return videoInfo.getAvatarsFromFilelist(listOfFiles);
     }
