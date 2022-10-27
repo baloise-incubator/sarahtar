@@ -15,7 +15,8 @@ import java.nio.file.Path;
 public class VideoPlayer {
 
     private static final String MPLAYER_START = "mplayer -slave -nolirc -fs -fixed-vo -idle -quiet -input file=player_in > mplayer.log";
-    private static final String HOMEDIR = "/usr/bin/sarahtar/videos/";
+    private static final String BASE_DIR = "/usr/bin/sarahtar/";
+    private static final String VIDEO_DIR = BASE_DIR+"videos/";
 
     private Process mplayer = null;
 
@@ -36,16 +37,16 @@ public class VideoPlayer {
     }
 
     @Async
-    public void playVideo(String speechFileName, String idleFileName) throws IOException {
+    public void playVideo(String speechFileName, String idleFileName) {
         logger.info("Received play command for video: " + speechFileName);
 
         if (!isUnix()) {
             return;
         }
-        long duration = getMp4Duration(HOMEDIR + speechFileName);
+        long duration = getMp4Duration(speechFileName);
         logger.info("Duration of Video: "+duration);
 
-        mplayerDo("loadfile /usr/bin/sarahtar/videos/"+speechFileName);
+        mplayerDo("loadfile "+VIDEO_DIR+speechFileName);
 
         logger.info("Sleeping for : "+duration+ "milliseconds");
         try {
@@ -54,11 +55,11 @@ public class VideoPlayer {
             throw new RuntimeException(e);
         }
 
-        mplayerDo("loadfile /usr/bin/sarahtar/videos/"+idleFileName);
+        mplayerDo("loadfile "+VIDEO_DIR+idleFileName);
     }
 
-    private long getMp4Duration(String speechPath) {
-        File file = new File(speechPath);
+    private long getMp4Duration(String speechFileName) {
+        File file = new File(VIDEO_DIR+speechFileName);
         if (Files.notExists(file.toPath()) || !Files.isReadable(file.toPath())) {
             logger.warn(" The file path does not exist or is unreadable  {}", file.toPath());
             return 0;
@@ -85,7 +86,7 @@ public class VideoPlayer {
     private void mplayerDo(String command) {
         logger.info("Using command: " + command);
 
-        Path fileName = Path.of("/usr/bin/sarahtar/player_in");
+        Path fileName = Path.of(BASE_DIR+"player_in");
 
         try {
             Files.writeString(fileName, command+"\n");
