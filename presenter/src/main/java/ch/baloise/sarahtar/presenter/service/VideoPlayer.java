@@ -13,9 +13,8 @@ import java.nio.file.Path;
 
 @Service
 public class VideoPlayer {
-
-    private static final String MPLAYER_START = "mplayer -slave -nolirc -fs -fixed-vo -idle -quiet -input file=player_in > mplayer.log";
     private static final String BASE_DIR = "/usr/bin/sarahtar/";
+    private static final String MPLAYER_START = "mplayer -slave -nolirc -fs -fixed-vo -idle -quiet -input file="+BASE_DIR+"player_in > "+BASE_DIR+"mplayer.log";
     private static final String VIDEO_DIR = BASE_DIR+"videos/";
 
     private static Process mplayer = null;
