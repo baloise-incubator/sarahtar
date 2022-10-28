@@ -18,6 +18,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 @RestController
 @EnableAsync
@@ -53,11 +54,11 @@ public class PlaybackRestController {
 
     // get list of available video files and remove those that should not be played in random mode
     private List<File> getRandomVideoFiles() {
-        List<File> files = videoInfo.listAllVideoFiles();
-        files.removeIf(file -> file.getName().contains("idle"));
-        files.removeIf(file -> file.getName().contains("codecamp"));
-        files.removeIf(file -> file.getName().contains("openxday"));
-        return files;
+        return videoInfo.listAllVideoFiles().stream()
+                .filter(file -> !file.getName().contains("idle"))
+                .filter(file -> !file.getName().contains("codecamp"))
+                .filter(file -> !file.getName().contains("openxday"))
+                .collect(Collectors.toList());
     }
 
     @GetMapping("/{id}/{videoid}/{language}")
