@@ -43,8 +43,7 @@ public class PlaybackRestController {
 
     @GetMapping("/random")
     String playRandomVideo() throws IOException {
-        List<File> files = videoInfo.listAllVideoFiles();
-        files.removeIf(file -> file.getName().contains("idle"));
+        List<File> files = getRandomVideoFiles();
         File randomFile = files.get(rand.nextInt(files.size()));
 
         List<Avatar> avatars = new ArrayList<>();
@@ -52,6 +51,15 @@ public class PlaybackRestController {
         Avatar avatar = avatars.get(0);
         Speech speech = avatar.getSpeeches().get(0);
         return playVideoById(avatar.getName(), speech.getName(), speech.getLanguageTag());
+    }
+
+    // get list of available video files and remove those that should not be played in random mode
+    private List<File> getRandomVideoFiles() {
+        List<File> files = videoInfo.listAllVideoFiles();
+        files.removeIf(file -> file.getName().contains("idle"));
+        files.removeIf(file -> file.getName().contains("codecamp"));
+        files.removeIf(file -> file.getName().contains("openxday"));
+        return files;
     }
 
     @GetMapping("/{id}/{videoid}/{language}")
