@@ -1,4 +1,3 @@
-#! /bin/sh
 ### BEGIN INIT INFO
 # Provides: sarahtar
 # Required-Start: $syslog
@@ -6,24 +5,41 @@
 # Default-Start: 2 3 4 5
 # Default-Stop: 0 1 6
 # Short-Description: Sarahtar
-# Description:
+# Description: This is the autostart script for sarahtar.
+#              Need to be placed in /etc/init.d directory and added to autostart by
+#              sudo chmod 755 /etc/init.d/sarahtar
+#              sudo update-rc.d sarahtar defaults
+#              then it can be used on command line as "sr start" or "sr stop"
 ### END INIT INFO
- 
+
 case "$1" in
     start)
         echo "Sarahtar will be started"
+	      # Initialize GPIO for button
+	      echo "Sarahtar initializing gpio27 for sensor"
+	      echo 27 > /sys/class/gpio/export
+	      echo in > /sys/class/gpio/gpio27/direction
+	      # Initialize GPIO for button
+	      echo "Sarahtar initializing gpio27 for sensor"
+	      export DISPLAY=:0
+	      echo "Sarahtar starting both Java Apps:"
+	      echo "- presenter"
+	      echo "- sensor trigger"
+	      echo ""
         # Start Program
         java -jar /usr/bin/sarahtar/presenter-0.0.1-SNAPSHOT.jar
-        ;;
+	      java -jar /usr/bin/sarahtar/sensor-trigger-0.0.1-SNAPSHOT.jar
+	;;
     stop)
         echo "Sarahtar will be killed"
-        # Beende Programm
-        killall java
+        # End the Program
+        killall -9 java
+	      killall -9 mplayer
         ;;
     *)
         echo "Use: /etc/init.d/sarahtar {start|stop}"
         exit 1
         ;;
 esac
- 
+
 exit 0
