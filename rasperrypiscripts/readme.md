@@ -16,3 +16,8 @@ test if autostart works
 ---
 remove from autostart if needed
 - sudo update-rc.d sarahtar remove
+
+## Using command "sr start", "sr stop":
+
+To achieve that, please create new file "sr" in "/usr/bin" and copy the saratar autostart content there, save
+then u can use the commands "sr start" and "sr stop" to control the lifecycle of the application
