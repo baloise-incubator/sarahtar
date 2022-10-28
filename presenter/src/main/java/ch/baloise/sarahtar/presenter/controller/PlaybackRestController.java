@@ -15,8 +15,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.PostConstruct;
 import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -37,12 +35,12 @@ public class PlaybackRestController {
     private final Random rand = new Random(System.currentTimeMillis());
 
     @PostConstruct
-    public void initApplication() throws IOException {
+    public void initApplication() {
         playVideoById("sarah","welcome","DE");
     }
 
     @GetMapping("/random")
-    String playRandomVideo() throws IOException {
+    String playRandomVideo() {
         List<File> files = getRandomVideoFiles();
         File randomFile = files.get(rand.nextInt(files.size()));
 
@@ -63,13 +61,14 @@ public class PlaybackRestController {
     }
 
     @GetMapping("/{id}/{videoid}/{language}")
-    String playVideo(@PathVariable String id, @PathVariable String videoid, @PathVariable String language) throws IOException {
+    String playVideo(@PathVariable String id, @PathVariable String videoid, @PathVariable String language) {
         return playVideoById(id, videoid, language);
     }
 
-    private String playVideoById(String avatarname, String videotag, String language) throws IOException {
-        logger.info("Received play command: video: " + avatarname +", videotag: " + videotag + " to start once");
-        videoPlayer.playVideo(avatarname+"_"+videotag+"_"+language+".mp4", avatarname+"_idle.mp4");
-        return "playing " + videotag;
+    private String playVideoById(String avatarname, String videotag, String language) {
+        logger.info("Received play command for video: " + avatarname +", videotag: " + videotag);
+        String fileName = avatarname + "_" + videotag + "_" + language + ".mp4";
+        videoPlayer.playVideo(fileName, avatarname+"_idle.mp4");
+        return "playing " + fileName;
     }
 }
