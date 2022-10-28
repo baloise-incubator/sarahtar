@@ -7,19 +7,17 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class VideoInfo {
 
+    private static final String VIDEO_DIR = "/usr/bin/sarahtar/videos/";
+
     Logger logger = LoggerFactory.getLogger(VideoInfo.class);
 
     public List<File> listAllVideoFiles() {
-        File folder = new File("/usr/bin/sarahtar/videos/");
-        return Arrays.asList(folder.listFiles());
+        return Arrays.asList(Objects.requireNonNull(new File(VIDEO_DIR).listFiles()));
     }
 
     public List<Avatar> getAvatarsFromFilelist(List<File> listOfFiles) {
