@@ -42,7 +42,7 @@ public class PlaybackRestController {
 
     @GetMapping("/random")
     String playRandomVideo() {
-        List<File> files = getRandomVideoFiles();
+        List<File> files = getRandomVideoFiles(videoInfo.listAllVideoFiles());
         File randomFile = files.get(rand.nextInt(files.size()));
 
         List<Avatar> avatars = new ArrayList<>();
@@ -53,8 +53,8 @@ public class PlaybackRestController {
     }
 
     // get list of available video files and remove those that should not be played in random mode
-    private List<File> getRandomVideoFiles() {
-        return videoInfo.listAllVideoFiles().stream()
+    List<File> getRandomVideoFiles(List<File> allVideoFiles) {
+        return allVideoFiles.stream()
                 .filter(file -> !file.getName().contains("idle"))
                 .filter(file -> !file.getName().contains("codecamp"))
                 .filter(file -> !file.getName().contains("openxday"))
