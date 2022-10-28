@@ -28,15 +28,17 @@ public class VideoPlayer {
             return;
         }
         logger.info("Starting Video Service");
-        ProcessBuilder pb = new ProcessBuilder(MPLAYER_START.split( " "));
-        // local display
-        pb.environment().put("DISPLAY", ":0");
-        try {
-            mplayer = pb.start();
-            logger.info("Mplayer process started with pid: " + mplayer.pid());
-            mplayerDo("set_property loop 0");
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+        if (isUnix()) {
+            ProcessBuilder pb = new ProcessBuilder(MPLAYER_START.split( " "));
+            // local display
+            pb.environment().put("DISPLAY", ":0");
+            try {
+                mplayer = pb.start();
+                logger.info("Mplayer process started with pid: " + mplayer.pid());
+                mplayerDo("set_property loop 0");
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 
